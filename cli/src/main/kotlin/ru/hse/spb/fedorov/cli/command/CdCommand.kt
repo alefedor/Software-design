@@ -9,7 +9,7 @@ object CdCommand : EnvironmentalCommand() {
     override fun execute(args: List<String>, input: String, environment: Environment): CommandResult {
         if (args.isNotEmpty()) {
             val directory = getAbsoluteOrRelativeDirectory(args[0], environment)
-            environment.setVariable(Environment.CURRENT_DIRECTORY_PATH, directory.absolutePath)
+            environment.setVariable(Environment.CURRENT_DIRECTORY_PATH, directory.canonicalPath)
         } else {
             environment.setVariable(Environment.CURRENT_DIRECTORY_PATH, System.getProperty("user.home"))
         }
