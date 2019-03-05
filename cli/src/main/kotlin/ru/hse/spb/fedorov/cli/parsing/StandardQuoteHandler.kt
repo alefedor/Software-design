@@ -1,5 +1,7 @@
 package ru.hse.spb.fedorov.cli.parsing
 
+import java.util.function.Supplier
+
 class StandardQuoteHandler : QuoteHandler {
     private val weakQuotes = setOf('"')
     private val strongQuotes = setOf('\'')
@@ -20,4 +22,10 @@ class StandardQuoteHandler : QuoteHandler {
     }
 
     override fun inQuotes(): Boolean = topQuote != null
+}
+
+object StandardQuoteHandlerSupplier : Supplier<QuoteHandler> {
+    override fun get(): QuoteHandler {
+        return StandardQuoteHandler()
+    }
 }
