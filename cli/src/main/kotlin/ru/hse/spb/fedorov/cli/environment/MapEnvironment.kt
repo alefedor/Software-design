@@ -45,17 +45,14 @@ class MapEnvironment : Environment {
     override fun getVariable(name: String): String = variables.getOrDefault(name, "")
 
     private fun executeNonDefinedCommand(name: String, args: List<String>, input: String): CommandResult {
-        val currentPath = getCurrentPath().toString() + File.separator
-
-        val process = Runtime.getRuntime().exec(currentPath + name + " " + args.joinToString(" "))
+        val process = Runtime.getRuntime().exec(name + " " + args.joinToString(" "))
 
         process.outputStream.write(input.toByteArray())
         process.waitFor()
 
-        return CommandResult(process.inputStream.readBytes().toString(Charset.defaultCharset()))
-    }
+        if (process.exitValue() != 0)
+            throw CommandShellException("Non defined command run, but failed")
 
-    private fun getCurrentPath(): Path {
-        return Paths.get(getVariable(CURRENT_DIRECTORY_PATH))
+        return CommandResult(process.inputStream.readBytes().toString(Charset.defaultCharset()))
     }
 }

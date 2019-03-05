@@ -9,7 +9,7 @@ class TokenizerTest {
 
     @Before
     fun setUp() {
-        tokenizer = StandardTokenizer
+        tokenizer = StandardTokenizer(StandardQuoteHandlerSupplier)
     }
 
     @Test

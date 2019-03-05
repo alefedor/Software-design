@@ -5,6 +5,7 @@ import org.junit.Test
 import org.junit.Rule
 import org.junit.contrib.java.lang.system.ExpectedSystemExit
 import ru.hse.spb.fedorov.cli.exception.ParserException
+import java.io.File
 
 
 class GeneralCommandsTest {
@@ -44,7 +45,8 @@ class GeneralCommandsTest {
 
     @Test
     fun testWc() {
-        assertEquals("3 4 27", WcCommand.execute(listOf("./src/test/resources/echo.sh"), "").output)
+        val bytes = File("./src/test/resources/echo.sh").readBytes().size
+        assertEquals("3 4 ${bytes}", WcCommand.execute(listOf("./src/test/resources/echo.sh"), "").output)
     }
 
     @Test
