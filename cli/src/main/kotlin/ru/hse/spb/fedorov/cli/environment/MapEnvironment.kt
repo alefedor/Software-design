@@ -3,7 +3,6 @@ package ru.hse.spb.fedorov.cli.environment
 import ru.hse.spb.fedorov.cli.command.Command
 import ru.hse.spb.fedorov.cli.command.CommandResult
 import ru.hse.spb.fedorov.cli.command.executeWithEnvironment
-import ru.hse.spb.fedorov.cli.environment.Environment.Companion.CURRENT_DIRECTORY_PATH
 import ru.hse.spb.fedorov.cli.exception.CommandShellException
 import java.io.File
 import java.nio.charset.Charset
