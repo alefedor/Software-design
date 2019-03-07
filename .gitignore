@@ -1,6 +1,8 @@
 out/
+build/
 .gradle/
 workspace.xml
 tasks.xml
 uiDesigner.xml
 libraries/
+.idea/
