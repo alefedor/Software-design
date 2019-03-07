@@ -33,7 +33,7 @@ class GeneralCommandsTest {
 
     @Test
     fun testCatArguments() {
-        assertEquals("meow\n", CatCommand.execute(listOf("./src/test/resources/meow"), "wow").output)
+        assertEquals("meow" + System.lineSeparator(), CatCommand.execute(listOf("./src/test/resources/meow"), "wow").output)
     }
 
     @Test
