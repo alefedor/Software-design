@@ -3,6 +3,8 @@ package ru.hse.spb.fedorov.cli.command
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.default
 import ru.hse.spb.fedorov.cli.exception.ParserException
+import java.io.File
+import java.lang.IllegalArgumentException
 import java.lang.StringBuilder
 
 object GrepCommand : GeneralCommand() {
@@ -31,7 +33,7 @@ object GrepCommand : GeneralCommand() {
 
             val regex = pattern.toRegex(regexOptions)
 
-            val lines = input.split('\n')
+            val lines = if (files.isEmpty()) input.split('\n') else File(files[0]).readLines()
 
             var shouldPrint = 0
 
@@ -56,17 +58,33 @@ object GrepCommand : GeneralCommand() {
             "-i",
             help = "search case insensitive"
         )
+
         val onlyWholeWord by parser.flagging(
             "-w",
             help = "search only whole words"
         )
+
         val afterFoundNumber by parser.storing(
             "-A",
             help = "print n lines after found match line"
-        ) { toInt() }.default(0)
+        ) {
+            val result = toInt()
+            if (result < 0)
+                throw IllegalArgumentException("number of lines should be non-negative")
+            result
+        }.default(0)
+
         val pattern by parser.positional(
             "PATTERN",
             "pattern for searching"
         )
+
+        val files: List<String> by parser.positionalList(
+            "FILES",
+            help = "files to search in"
+        ).default(emptyList()).addValidator {
+            if (files.size > 1)
+                throw IllegalArgumentException("should be only one or zero files")
+        }
     }
 }
