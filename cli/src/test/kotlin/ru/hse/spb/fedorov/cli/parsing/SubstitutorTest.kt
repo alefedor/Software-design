@@ -15,7 +15,7 @@ class SubstitutorTest {
     @Before
     fun setUp() {
         environment = MapEnvironment()
-        substitutor = StandardSubstitutor(environment)
+        substitutor = StandardSubstitutor(environment, StandardQuoteHandlerSupplier)
     }
 
     @Test

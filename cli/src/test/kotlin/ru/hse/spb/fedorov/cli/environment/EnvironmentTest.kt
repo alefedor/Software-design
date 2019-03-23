@@ -41,10 +41,4 @@ class EnvironmentTest {
         environment.setCommand("echo", EchoCommand)
         assertEquals("nya", environment.executeCommand("echo", listOf("nya"), "").output)
     }
-
-    @Test
-    fun testUndefinedCommand() {
-        environment = StandardEnvironmentFactory.createEnvironment()
-        assertEquals("nya\n", environment.executeCommand("src/test/resources/echo.sh", listOf("nya"), "").output)
-    }
 }

@@ -16,8 +16,7 @@ object StandardEnvironmentFactory : EnvironmentFactory {
         environment.setCommand("exit", ExitCommand)
         environment.setCommand("pwd", PwdCommand)
         environment.setCommand("wc", WcCommand)
-
-        environment.setVariable(Environment.CURRENT_DIRECTORY_PATH, Paths.get("").toAbsolutePath().toString())
+        environment.setCommand("grep", GrepCommand)
 
         return environment
     }

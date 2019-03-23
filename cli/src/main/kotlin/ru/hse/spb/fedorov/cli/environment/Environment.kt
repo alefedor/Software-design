@@ -7,10 +7,6 @@ import ru.hse.spb.fedorov.cli.command.CommandResult
  * Abstraction for variables and commands of the command shell
  */
 interface Environment {
-    companion object {
-        const val CURRENT_DIRECTORY_PATH = "CDPath"
-    }
-
     /**
      * Defines new command by its name
      */
