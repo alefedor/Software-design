@@ -25,7 +25,7 @@ object GrepCommand : GeneralCommand() {
         val resultBuilder = StringBuilder()
 
         arguments.run {
-            val pattern = if (onlyWholeWord) "(^|\\s)$pattern($|\\s)" else pattern
+            val pattern = if (onlyWholeWord) "(^|\\b)$pattern($|\\b)" else pattern
             val regexOptions = mutableSetOf<RegexOption>()
 
             if (caseInsensitive)
