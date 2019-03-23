@@ -18,8 +18,8 @@ object GrepCommand : GeneralCommand() {
         lateinit var arguments: GrepArguments
         try {
             arguments = ArgParser(args.toTypedArray()).parseInto(::GrepArguments)
-        } catch (e: Throwable) {
-            throw ParserException("Error in parsing grep arguments", e)
+        } catch (e: Exception) {
+            throw ParserException("Error in parsing grep arguments: " + e.message)
         }
 
         val resultBuilder = StringBuilder()
