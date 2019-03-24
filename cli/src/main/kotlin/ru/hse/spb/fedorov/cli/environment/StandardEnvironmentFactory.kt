@@ -17,6 +17,8 @@ object StandardEnvironmentFactory : EnvironmentFactory {
         environment.setCommand("pwd", PwdCommand)
         environment.setCommand("wc", WcCommand)
         environment.setCommand("grep", GrepCommand)
+        environment.setCommand("ls", LsCommand)
+        environment.setCommand("cd", CdCommand)
 
         return environment
     }

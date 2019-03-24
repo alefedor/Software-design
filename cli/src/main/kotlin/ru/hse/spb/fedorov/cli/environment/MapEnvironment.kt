@@ -6,12 +6,11 @@ import ru.hse.spb.fedorov.cli.command.executeWithEnvironment
 import ru.hse.spb.fedorov.cli.exception.CommandShellException
 import java.io.File
 import java.nio.charset.Charset
-import java.nio.file.InvalidPathException
-import java.nio.file.Paths
 import java.nio.file.Path
+import java.nio.file.Paths
 
 /**
- * An implementation of Environment using standart map.
+ * An implementation of Environment using standard map.
  */
 class MapEnvironment : Environment {
     private val variables: MutableMap<String, String> = mutableMapOf()
@@ -53,5 +52,16 @@ class MapEnvironment : Environment {
             throw CommandShellException("Non defined command run, but failed")
 
         return CommandResult(process.inputStream.readBytes().toString(Charset.defaultCharset()))
+    }
+
+    private fun getRelativeDirectory(delta: String): File {
+        if (delta.isEmpty()) return File(getVariable(CURRENT_DIRECTORY_PATH))
+
+        val path = getVariable(CURRENT_DIRECTORY_PATH) + File.separator + delta
+        val directory = File(path)
+        if (!directory.isDirectory) {
+            throw CommandShellException("No such directory: $path")
+        }
+        return directory
     }
 }

@@ -1,6 +1,8 @@
 package ru.hse.spb.fedorov.cli.command
 
 import ru.hse.spb.fedorov.cli.environment.Environment
+import ru.hse.spb.fedorov.cli.exception.CommandShellException
+import java.io.File
 
 /**
  * An abstraction for the result of a command execution
@@ -17,6 +19,22 @@ sealed class Command
  */
 abstract class EnvironmentalCommand : Command() {
     abstract fun execute(args: List<String>, input: String, environment: Environment): CommandResult
+
+    fun getAbsoluteOrRelativeDirectory(path: String, environment: Environment): File {
+        if (path.startsWith(File.separator)) return getAbsoluteDirectory(path)
+        if (path.isEmpty()) return File(environment.getVariable(Environment.CURRENT_DIRECTORY_PATH))
+
+        val newPath = environment.getVariable(Environment.CURRENT_DIRECTORY_PATH) + File.separator + path
+        return getAbsoluteDirectory(newPath)
+    }
+
+    private fun getAbsoluteDirectory(path: String): File {
+        val directory = File(path)
+        if (!directory.isDirectory) {
+            throw CommandShellException("No such directory: $path")
+        }
+        return directory
+    }
 }
 
 /**
