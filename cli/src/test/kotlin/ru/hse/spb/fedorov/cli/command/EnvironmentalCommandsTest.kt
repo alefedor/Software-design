@@ -1,10 +1,11 @@
 package ru.hse.spb.fedorov.cli.command
 
-import org.junit.Test
 import org.junit.Assert.*
+import org.junit.Test
 import ru.hse.spb.fedorov.cli.environment.MapEnvironment
 import ru.hse.spb.fedorov.cli.environment.StandardEnvironmentFactory
 import ru.hse.spb.fedorov.cli.exception.CommandShellException
+import java.io.File
 import java.nio.file.Paths
 
 class EnvironmentalCommandsTest {
@@ -32,5 +33,64 @@ class EnvironmentalCommandsTest {
         val environment = StandardEnvironmentFactory.createEnvironment()
         val pwd = PwdCommand.execute(listOf(), "", environment).output
         assertEquals(Paths.get(".").toAbsolutePath(), Paths.get(pwd + "/.").toAbsolutePath())
+    }
+
+    @Test
+    fun testCdCommandPreviousDirectory() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        val cur_path = Paths.get(".").toRealPath().toString()
+        CdCommand.execute(listOf(".."), "", environment)
+        assertEquals(
+            cur_path.dropLastWhile { it != File.separatorChar }.dropLast(1),
+            PwdCommand.execute(listOf(), "", environment).output
+        )
+    }
+
+    @Test
+    fun testCdCommandNextDir() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        val nextDir = "newDir"
+        File(nextDir).mkdirs()
+        CdCommand.execute(listOf("newDir"), "", environment)
+        assertTrue(PwdCommand.execute(listOf(), "", environment).output.endsWith(nextDir))
+        File(nextDir).delete()
+    }
+
+    @Test(expected = CommandShellException::class)
+    fun testCdUnexistingDir() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        CdCommand.execute(listOf("unexistingDir"), "", environment)
+    }
+
+    @Test
+    fun testLs() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        val files = File(".").list()
+        assertArrayEquals(
+            files,
+            LsCommand.execute(listOf<String>(), "", environment).output.split(" ").toTypedArray()
+        )
+    }
+
+    @Test
+    fun testCatZeroArguments() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        assertEquals("wow", CatCommand.execute(listOf(), "wow", environment).output)
+    }
+
+    @Test
+    fun testCatArguments() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        assertEquals(
+            "meow" + System.lineSeparator(),
+            CatCommand.execute(listOf("./src/test/resources/meow"), "wow", environment).output
+        )
+    }
+
+    @Test
+    fun testWc() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        val bytes = File("./src/test/resources/echo.sh").readBytes().size
+        assertEquals("3 4 ${bytes}", WcCommand.execute(listOf("./src/test/resources/echo.sh"), "", environment).output)
     }
 }

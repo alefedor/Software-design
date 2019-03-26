@@ -2,6 +2,7 @@ package ru.hse.spb.fedorov.cli.environment
 
 import ru.hse.spb.fedorov.cli.command.Command
 import ru.hse.spb.fedorov.cli.command.CommandResult
+import java.nio.file.Path
 
 /**
  * Abstraction for variables and commands of the command shell
@@ -26,4 +27,14 @@ interface Environment {
      * Returns the value of the variable defined by its name
      */
     fun getVariable(name: String): String
+
+    /**
+     * Returns the path of current working directory
+     */
+    fun getCurrentWorkingDirectory(): Path
+
+    /**
+     * Changes current working directory
+     */
+    fun setCurrentWorkingDirectory(path: Path)
 }

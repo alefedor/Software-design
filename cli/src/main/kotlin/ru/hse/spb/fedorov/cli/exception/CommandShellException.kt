@@ -5,4 +5,4 @@ import java.lang.Exception
 /**
  * Exception thrown because of failure in command shell execution.
  */
-class CommandShellException(message: String) : Exception(message)
+class CommandShellException(message: String) : RuntimeException(message)

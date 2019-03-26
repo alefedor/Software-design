@@ -1,18 +1,18 @@
 package ru.hse.spb.fedorov.cli.command
 
-import ru.hse.spb.fedorov.cli.exception.CommandShellException
-import java.nio.file.Paths
+import ru.hse.spb.fedorov.cli.environment.Environment
 
-object CatCommand : GeneralCommand() {
+object CatCommand : EnvironmentalCommand() {
     /**
      * If there is no arguments returns input.
      * If there are arguments then returns joined contents of all files denotef by arguments.
      */
-    override fun execute(args: List<String>, input: String): CommandResult {
+    override fun execute(args: List<String>, input: String, environment: Environment): CommandResult {
         if (args.isEmpty()) return CommandResult(input)
 
         return CommandResult(args.joinToString("", "", System.lineSeparator()) {
-            Paths.get(it).toFile().readLines().joinToString(System.lineSeparator())
+            environment.getCurrentWorkingDirectory().resolve(it).toFile().readLines()
+                .joinToString(System.lineSeparator())
         })
     }
 }
