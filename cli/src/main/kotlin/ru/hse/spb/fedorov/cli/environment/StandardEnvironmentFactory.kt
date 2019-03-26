@@ -1,7 +1,6 @@
 package ru.hse.spb.fedorov.cli.environment
 
 import ru.hse.spb.fedorov.cli.command.*
-import java.nio.file.Paths
 
 /**
  * Factory for the creation of environment with all standard operations.
@@ -16,7 +15,6 @@ object StandardEnvironmentFactory : EnvironmentFactory {
         environment.setCommand("exit", ExitCommand)
         environment.setCommand("pwd", PwdCommand)
         environment.setCommand("wc", WcCommand)
-        environment.setCommand("grep", GrepCommand)
         environment.setCommand("ls", LsCommand)
         environment.setCommand("cd", CdCommand)
 
