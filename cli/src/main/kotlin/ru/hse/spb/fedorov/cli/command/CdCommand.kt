@@ -15,7 +15,7 @@ object CdCommand : EnvironmentalCommand() {
         if (newPath.toFile().isDirectory) {
             environment.setCurrentWorkingDirectory(newPath)
         } else {
-            throw CommandShellException("cd: no such file or directory: ${args[0]}")
+            throw CommandShellException("cd: no such directory: ${args[0]}")
         }
 
         return CommandResult("")
