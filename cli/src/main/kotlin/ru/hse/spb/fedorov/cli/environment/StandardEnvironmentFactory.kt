@@ -20,8 +20,6 @@ object StandardEnvironmentFactory : EnvironmentFactory {
         environment.setCommand("ls", LsCommand)
         environment.setCommand("cd", CdCommand)
 
-        environment.setVariable(Environment.CURRENT_DIRECTORY_PATH, Paths.get("").toAbsolutePath().toString())
-
         return environment
     }
 }

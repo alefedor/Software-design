@@ -11,6 +11,8 @@ object CatCommand : GeneralCommand() {
     override fun execute(args: List<String>, input: String): CommandResult {
         if (args.isEmpty()) return CommandResult(input)
 
-        return CommandResult(args.joinToString("", "", "\n") { Paths.get(it).toFile().readLines().joinToString("\n") })
+        return CommandResult(args.joinToString("", "", System.lineSeparator()) {
+            Paths.get(it).toFile().readLines().joinToString(System.lineSeparator())
+        })
     }
 }

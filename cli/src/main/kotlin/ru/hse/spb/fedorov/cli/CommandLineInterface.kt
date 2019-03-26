@@ -6,6 +6,7 @@ import ru.hse.spb.fedorov.cli.exception.ParserException
 import ru.hse.spb.fedorov.cli.executor.StandardCommandExecutor
 import ru.hse.spb.fedorov.cli.parsing.StandardParserFactory
 import java.io.IOException
+import java.lang.IllegalArgumentException
 import java.nio.file.InvalidPathException
 
 
@@ -34,8 +35,11 @@ class CommandLineInterface(val environment: Environment) {
                 print(e.message)
             } catch (e: IOException) {
                 print(e.message)
+            } catch (e: IllegalArgumentException) {
+                print(e.message)
             }
-            print("\n")
+
+            print(System.lineSeparator())
         }
     }
 }

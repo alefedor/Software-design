@@ -4,6 +4,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.Rule
 import org.junit.contrib.java.lang.system.ExpectedSystemExit
+import java.io.File
 import ru.hse.spb.fedorov.cli.exception.ParserException
 
 
@@ -33,7 +34,7 @@ class GeneralCommandsTest {
 
     @Test
     fun testCatArguments() {
-        assertEquals("meow\n", CatCommand.execute(listOf("./src/test/resources/meow"), "wow").output)
+        assertEquals("meow" + System.lineSeparator(), CatCommand.execute(listOf("./src/test/resources/meow"), "wow").output)
     }
 
     @Test
@@ -44,7 +45,8 @@ class GeneralCommandsTest {
 
     @Test
     fun testWc() {
-        assertEquals("3 4 27", WcCommand.execute(listOf("./src/test/resources/echo.sh"), "").output)
+        val bytes = File("./src/test/resources/echo.sh").readBytes().size
+        assertEquals("3 4 ${bytes}", WcCommand.execute(listOf("./src/test/resources/echo.sh"), "").output)
     }
 
     @Test
