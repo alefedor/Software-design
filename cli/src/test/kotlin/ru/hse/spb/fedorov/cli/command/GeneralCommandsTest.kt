@@ -1,10 +1,9 @@
 package ru.hse.spb.fedorov.cli.command
 
-import org.junit.Assert.*
-import org.junit.Test
+import org.junit.Assert.assertEquals
 import org.junit.Rule
+import org.junit.Test
 import org.junit.contrib.java.lang.system.ExpectedSystemExit
-import java.io.File
 import ru.hse.spb.fedorov.cli.exception.ParserException
 
 
@@ -27,26 +26,11 @@ class GeneralCommandsTest {
         assertEquals("", EchoCommand.execute(listOf(), "wow").output)
     }
 
-    @Test
-    fun testCatZeroArguments() {
-        assertEquals("wow", CatCommand.execute(listOf(), "wow").output)
-    }
-
-    @Test
-    fun testCatArguments() {
-        assertEquals("meow" + System.lineSeparator(), CatCommand.execute(listOf("./src/test/resources/meow"), "wow").output)
-    }
 
     @Test
     fun testExit() {
         exit.expectSystemExitWithStatus(0)
         ExitCommand.execute(listOf(), "")
-    }
-
-    @Test
-    fun testWc() {
-        val bytes = File("./src/test/resources/echo.sh").readBytes().size
-        assertEquals("3 4 ${bytes}", WcCommand.execute(listOf("./src/test/resources/echo.sh"), "").output)
     }
 
     @Test

@@ -71,4 +71,26 @@ class EnvironmentalCommandsTest {
             LsCommand.execute(listOf<String>(), "", environment).output.split(" ").toTypedArray()
         )
     }
+
+    @Test
+    fun testCatZeroArguments() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        assertEquals("wow", CatCommand.execute(listOf(), "wow", environment).output)
+    }
+
+    @Test
+    fun testCatArguments() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        assertEquals(
+            "meow" + System.lineSeparator(),
+            CatCommand.execute(listOf("./src/test/resources/meow"), "wow", environment).output
+        )
+    }
+
+    @Test
+    fun testWc() {
+        val environment = StandardEnvironmentFactory.createEnvironment()
+        val bytes = File("./src/test/resources/echo.sh").readBytes().size
+        assertEquals("3 4 ${bytes}", WcCommand.execute(listOf("./src/test/resources/echo.sh"), "", environment).output)
+    }
 }

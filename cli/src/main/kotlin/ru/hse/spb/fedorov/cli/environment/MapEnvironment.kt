@@ -4,7 +4,6 @@ import ru.hse.spb.fedorov.cli.command.Command
 import ru.hse.spb.fedorov.cli.command.CommandResult
 import ru.hse.spb.fedorov.cli.command.executeWithEnvironment
 import ru.hse.spb.fedorov.cli.exception.CommandShellException
-import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -16,6 +15,7 @@ class MapEnvironment : Environment {
     private val variables: MutableMap<String, String> = mutableMapOf()
     private val commands: MutableMap<String, Command> = mutableMapOf()
 
+    private var cwd = Paths.get(System.getProperty("user.dir"))
     /**
      * @inheritDoc
      */
@@ -43,7 +43,7 @@ class MapEnvironment : Environment {
     override fun getVariable(name: String): String = variables.getOrDefault(name, "")
 
     private fun executeNonDefinedCommand(name: String, args: List<String>, input: String): CommandResult {
-        val process = Runtime.getRuntime().exec(name + " " + args.joinToString(" "))
+        val process = Runtime.getRuntime().exec(name + " " + args.joinToString(" "), null, cwd.toFile())
 
         process.outputStream.write(input.toByteArray())
         process.waitFor()
@@ -54,14 +54,15 @@ class MapEnvironment : Environment {
         return CommandResult(process.inputStream.readBytes().toString(Charset.defaultCharset()))
     }
 
-    private fun getRelativeDirectory(delta: String): File {
-        if (delta.isEmpty()) return File(getVariable(CURRENT_DIRECTORY_PATH))
+    /**
+     * @inheritDoc
+     */
+    override fun getCurrentWorkingDirectory(): Path = cwd
 
-        val path = getVariable(CURRENT_DIRECTORY_PATH) + File.separator + delta
-        val directory = File(path)
-        if (!directory.isDirectory) {
-            throw CommandShellException("No such directory: $path")
-        }
-        return directory
+    /**
+     * @inheritDoc
+     */
+    override fun setCurrentWorkingDirectory(path: Path) {
+        cwd = path
     }
 }
